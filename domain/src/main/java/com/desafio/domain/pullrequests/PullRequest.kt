@@ -1,4 +1,9 @@
 package com.desafio.domain.pullrequests
 
-class PullRequest {
-}
+open class PullRequest (val pullRequestOpened : Int = 0,
+                        val pullRequestClosed : Int = 0,
+                        val pullRequestTitle : String = "",
+                        val pullRequestDescription : String = "",
+                        val pullRequestUsername : String = "",
+                        val pullRequestFullUsername : String = "",
+                        val pullRequestIconUrl : String = "")
