@@ -4,14 +4,13 @@ import com.desafio.data.repositories.api.RepositoriesResponse
 import com.desafio.data.repositories.api.RepositoriesService
 import com.desafio.domain.repositories.RepositoriesCallback
 import com.desafio.domain.repositories.RepositoriesRepository
-import com.desafio.domain.repositories.Repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RepositoriesManager() : RepositoriesRepository {
+class RepositoriesManager : RepositoriesRepository {
 
     private val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -37,6 +36,6 @@ class RepositoriesManager() : RepositoriesRepository {
     }
 
     companion object {
-        private const val BASE_URL = "https://api.github.com/search/"
+        internal const val BASE_URL = "https://api.github.com/search/"
     }
 }
