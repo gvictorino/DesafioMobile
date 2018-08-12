@@ -1,40 +1,33 @@
 package com.desafio.data.user
-
-import com.desafio.data.repositories.RepositoriesManager
+import com.desafio.data.user.api.UserApiCallback
+import com.desafio.data.user.api.UserApiClient
 import com.desafio.data.user.api.UserModel
-import com.desafio.data.user.api.UserService
-import com.desafio.domain.repositories.RepositoriesCallback
 import com.desafio.domain.user.UserCallback
 import com.desafio.domain.user.UserRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class UserManager : UserRepository {
 
-    private val retrofit = Retrofit.Builder()
-            .baseUrl(RepositoriesManager.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private lateinit var client: UserApiClient
+    private lateinit var mCallback: UserCallback
 
-    private val service = retrofit.create(UserService::class.java)
+    fun UserManager(client: UserApiClient) {
+        this.client = client
+    }
 
-    override fun getUser(callback: UserCallback, userLogin : String) {
-        service.getUser(userLogin).enqueue(object : Callback<UserModel>{
 
-            override fun onResponse(call: Call<UserModel>?, response: Response<UserModel>?) {
+    override fun getUser(callback: UserCallback, userLogin: String) {
+        this.mCallback = callback
+
+        client.getUser(userLogin, object : UserApiCallback {
+
+            override fun onResponse(user: UserModel) {
+                mCallback.onSuccess(UserMapper.from(user))
             }
-            override fun onFailure(call: Call<UserModel>?, t: Throwable?) {
+
+            override fun onFailure(t: Throwable) {
+                mCallback.onFailure(t)
             }
-
-
         })
-
     }
 
-    companion object {
-        private const val BASE_URL = "https://api.github.com/"
-    }
 }
