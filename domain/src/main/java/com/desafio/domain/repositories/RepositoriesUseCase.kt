@@ -16,7 +16,7 @@ class RepositoriesUseCase(val mRepository : RepositoriesRepository) : UseCase<Un
         mRepository.getListOfRepositories(this,page)
     }
 
-    override fun onSuccess(repositories: List<Repositoy>, nextPage : Int) {
+    override fun onSuccess(repositories: List<Repository>, nextPage : Int) {
         callback.onSuccess(repositories,nextPage)
     }
 
